@@ -13,15 +13,29 @@ class TagsVideo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 50,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.all(Radius.elliptical(4, 2)),
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 50, maxHeight: 70, maxWidth: 150),
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.elliptical(16, 16)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: Center(
+            child: Text(
+              tag,
+              style: TextStyle(
+                color: colorText,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
       ),
-      child: Center(child: Text(tag, style: TextStyle(color: colorText), textAlign: TextAlign.center)),
     );
   }
 }

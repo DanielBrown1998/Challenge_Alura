@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Tags {
-  final String nome;
-  final Color colorText;
-  final Color backgroundColor;
-  Tags({
-    required this.nome,
-    required this.colorText,
-    required this.backgroundColor,
-  });
+  
+  Tags({required this.tagName, required this.textColor, required this.backColor});
+  final String tagName;
+  final Color textColor;
+  final Color backColor;
 }
