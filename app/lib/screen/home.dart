@@ -17,13 +17,9 @@ class HomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<HomePage> {
   Color buttonColor = ChalengeColors.primaryColorButton;
-  late final VideosObjects videos;
-  late final TagsObjects tags;
   double scaleMyButton = 1;
   @override
   void initState() {
-    tags = Provider.of<TagsObjects>(context, listen: false);
-    videos = Provider.of<VideosObjects>(context, listen: false);
     super.initState();
   }
 
