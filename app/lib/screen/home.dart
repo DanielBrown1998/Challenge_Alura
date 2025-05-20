@@ -1,7 +1,5 @@
 import 'package:app/models/tags_objects.dart';
-import 'package:app/models/videos.dart';
 import 'package:app/models/videos_objects.dart';
-import 'package:app/models/tags.dart';
 import 'package:app/screen/components/tags_video.dart';
 import 'package:flutter/material.dart';
 import 'package:app/screen/components/card_video.dart';
@@ -19,16 +17,13 @@ class HomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<HomePage> {
   Color buttonColor = ChalengeColors.primaryColorButton;
+  late final VideosObjects videos;
+  late final TagsObjects tags;
   double scaleMyButton = 1;
   @override
   void initState() {
-    TagsObjects tags = Provider.of<TagsObjects>(context, listen: false);
-    VideosObjects videos = Provider.of<VideosObjects>(context, listen: false);
-    for (Tags item in tags.tags) {
-      videos.addVideo(
-        Videos(tag: item, url: "https://video_computacao/?q=${item.tagName}"),
-      );
-    }
+    tags = Provider.of<TagsObjects>(context, listen: false);
+    videos = Provider.of<VideosObjects>(context, listen: false);
     super.initState();
   }
 
@@ -70,42 +65,46 @@ class _MyHomePageState extends State<HomePage> {
                     alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            scaleMyButton = 1.1;
-                          });
-                          print("Button");
-                          //direcionar para abrir o youtube
-                        },
-                        child: Container(
-                          constraints: BoxConstraints(
-                            maxWidth: 150,
-                            minWidth: 100,
-                            minHeight: 40,
-                            maxHeight: 50,
-                          ),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: buttonColor,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                          ),
-                          child: AnimatedScale(
-                            scale: scaleMyButton,
-                            duration: Duration(milliseconds: 100),
-                            curve: Curves.easeInOutExpo,
-                            onEnd: () {
-                              setState(() {
-                                scaleMyButton = 1;
-                              });
-                            },
-                            child: Text(
-                              "Assistir Agora",
-                              style: TextStyle(
-                                color: ChalengeColors.primaryTextColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                      child: Material(
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              scaleMyButton = 1.1;
+                            });
+                            print("Button");
+                            //direcionar para abrir o youtube
+                          },
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth: 150,
+                              minWidth: 100,
+                              minHeight: 40,
+                              maxHeight: 50,
+                            ),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: buttonColor,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                            ),
+                            child: AnimatedScale(
+                              scale: scaleMyButton,
+                              duration: Duration(milliseconds: 100),
+                              curve: Curves.easeInOutExpo,
+                              onEnd: () {
+                                setState(() {
+                                  scaleMyButton = 1;
+                                });
+                              },
+                              child: Text(
+                                "Assistir Agora",
+                                style: TextStyle(
+                                  color: ChalengeColors.primaryTextColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -164,8 +163,10 @@ class _MyHomePageState extends State<HomePage> {
                         bottom: 6,
                       ),
                       child: CardVideo(
+                        id: list.videos[index].id,
                         url: list.videos[index].url,
                         tags: list.videos[index].tag,
+                        thumbNail: list.videos[index].thumbNail,
                       ),
                     );
                   },
