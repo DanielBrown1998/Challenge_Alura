@@ -45,33 +45,24 @@ class _CardVideoState extends State<CardVideo> {
               color: Colors.black,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Material(
-              child: InkWell(
-                borderRadius: BorderRadius.circular(8),
-                onTap: () {
-                  print(widget.url);
-                },
-                child: Image.network(
-                  widget.thumbNail,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Icon(
-                        Icons.error,
-                        color: Colors.red,
-                        size: 50,
-                      ),
-                    );
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
-
-              ),
+            child: Image.network(
+              widget.thumbNail,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return const Center(
+                  child: Icon(
+                    Icons.error,
+                    color: Colors.red,
+                    size: 50,
+                  ),
+                );
+              },
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           ),
         ),

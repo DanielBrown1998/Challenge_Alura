@@ -1,4 +1,5 @@
 import 'package:app/models/tags_objects.dart';
+import 'package:app/models/videos.dart';
 import 'package:app/models/videos_objects.dart';
 import 'package:app/screen/components/tags_video.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,8 @@ class HomePage extends StatefulWidget {
 class _MyHomePageState extends State<HomePage> {
   Color buttonColor = ChalengeColors.primaryColorButton;
   double scaleMyButton = 1;
+  Videos? video;
+
   @override
   void initState() {
     super.initState();
@@ -44,70 +47,90 @@ class _MyHomePageState extends State<HomePage> {
       body: Column(
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 250),
+            constraints: video != null
+                      ? BoxConstraints(minHeight: 250)
+                      : BoxConstraints(),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * .25,
+              height:
+                  video != null
+                      ? MediaQuery.of(context).size.height * .25
+                      : MediaQuery.of(context).size.height * .05,
               child: Column(
                 children: [
-                  Container(
-                    // substitua pela thumb do video!
-                    decoration: BoxDecoration(
-                      color: ChalengeColors.backgroundColorApp,
-                      shape: BoxShape.rectangle,
-                    ),
-                    height: MediaQuery.of(context).size.height * .175,
-
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Material(
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              scaleMyButton = 1.1;
-                            });
-                            print("Button");
-                            //direcionar para abrir o youtube
-                          },
-                          child: Container(
-                            constraints: BoxConstraints(
-                              maxWidth: 150,
-                              minWidth: 100,
-                              minHeight: 40,
-                              maxHeight: 50,
-                            ),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: buttonColor,
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                            ),
-                            child: AnimatedScale(
-                              scale: scaleMyButton,
-                              duration: Duration(milliseconds: 100),
-                              curve: Curves.easeInOutExpo,
-                              onEnd: () {
-                                setState(() {
-                                  scaleMyButton = 1;
-                                });
+                  video != null
+                      ? Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * .18,
+                            child: Image.network(
+                              video!.thumbNail,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Center(
+                                  child: Icon(
+                                    Icons.error,
+                                    color: ChalengeColors.primaryTextColor,
+                                  ),
+                                );
                               },
-                              child: Text(
-                                "Assistir Agora",
-                                style: TextStyle(
-                                  color: ChalengeColors.primaryTextColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Material(
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    scaleMyButton = 1.1;
+                                  });
+                                  print("Button");
+                                  //direcionar para abrir o youtube
+                                },
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                    maxWidth: 150,
+                                    minWidth: 100,
+                                    minHeight: 40,
+                                    maxHeight: 50,
+                                  ),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: buttonColor,
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
+                                  child: AnimatedScale(
+                                    scale: scaleMyButton,
+                                    duration: Duration(milliseconds: 100),
+                                    curve: Curves.easeInOutExpo,
+                                    onEnd: () {
+                                      setState(() {
+                                        scaleMyButton = 1;
+                                      });
+                                    },
+                                    child: Text(
+                                      "Assistir Agora",
+                                      style: TextStyle(
+                                        color: ChalengeColors.primaryTextColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        ],
+                      )
+                      : SizedBox(height: 0),
+
                   Expanded(
                     child: Consumer(
                       builder: (
@@ -158,11 +181,20 @@ class _MyHomePageState extends State<HomePage> {
                         top: 6,
                         bottom: 6,
                       ),
-                      child: CardVideo(
-                        id: list.videos[index].id,
-                        url: list.videos[index].url,
-                        tags: list.videos[index].tag,
-                        thumbNail: list.videos[index].thumbNail,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            video = list.videos[index];
+                          });
+                        },
+                        child: Ink(
+                          child: CardVideo(
+                            id: list.videos[index].id,
+                            url: list.videos[index].url,
+                            tags: list.videos[index].tag,
+                            thumbNail: list.videos[index].thumbNail,
+                          ),
+                        ),
                       ),
                     );
                   },
