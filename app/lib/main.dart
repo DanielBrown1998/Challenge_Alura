@@ -1,3 +1,4 @@
+import 'package:app/screen/components/add_video.dart';
 import 'package:flutter/material.dart';
 import 'package:app/screen/home.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
 
       theme: ThemeData.dark(useMaterial3: true),
       initialRoute: "/",
-      routes: {"/": (context) => HomePage(title: "MOBFLIX")},
+      routes: {
+        "/": (context) => HomePage(title: "MOBFLIX"),
+        "addVideoScreen/": (context) => AddVIdeoScreen(),
+      },
     );
   }
 }
